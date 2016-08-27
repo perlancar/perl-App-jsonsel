@@ -30,7 +30,7 @@ sub _decode_json {
 
 $SPEC{jsonsel} = {
     v => 1.1,
-    summary => 'Select JSON elements using CSS selector syntax',
+    summary => 'Select JSON elements using CSel (CSS-selector-like) syntax',
     args => {
         %App::CSelUtils::foosel_common_args,
         %App::CSelUtils::foosel_struct_action_args,
