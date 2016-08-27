@@ -1,0 +1,4 @@
+App-jsonsel-*
+.build
+*~
+nytprof*
