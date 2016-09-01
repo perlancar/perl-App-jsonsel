@@ -60,7 +60,6 @@ sub jsonsel {
 
     require Data::CSel::WrapStruct;
     my $tree = Data::CSel::WrapStruct::wrap_struct($data);
-    use DD; dd $tree;
 
     my @matches = Data::CSel::csel(
         {class_prefixes=>['Data::CSel::WrapStruct']}, $expr, $tree);
