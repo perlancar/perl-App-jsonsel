@@ -1,5 +1,12 @@
 Revision history for App-jsonsel
 
+0.003   2016-09-01 (PERLANCAR)
+
+	- No functional changes.
+
+	- [doc] Mention CSel::Examples.
+
+
 0.002   2016-09-01 (PERLANCAR)
 
 	- [Bugfix] Don't skip root node if it's the only result.
