@@ -29,7 +29,7 @@ elements using L<JSON::Path> syntax.
 jq, L<https://stedolan.github.io/jq/>, is also a powerful tool to select as well
 as manipulate JSON elements.
 
-L<Data::CSel>, L<Data::CSel::WrapStruct>
+L<Data::CSel>, L<Data::CSel::WrapStruct>, L<CSel::Examples>
 
 L<yamlsel>, a similar application but for selecting YAML elements.
 
