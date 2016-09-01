@@ -60,12 +60,14 @@ sub jsonsel {
 
     require Data::CSel::WrapStruct;
     my $tree = Data::CSel::WrapStruct::wrap_struct($data);
+    use DD; dd $tree;
 
     my @matches = Data::CSel::csel(
         {class_prefixes=>['Data::CSel::WrapStruct']}, $expr, $tree);
 
-    # skip root node itself
-    @matches = grep { refaddr($_) ne refaddr($tree) } @matches;
+    # skip root node itself to avoid duplication
+    @matches = grep { refaddr($_) ne refaddr($tree) } @matches
+        unless @matches <= 1;
 
     for my $action (@$actions) {
         if ($action eq 'print') {
