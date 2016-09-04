@@ -26,8 +26,8 @@ Perinci::CmdLine::Any->new(
 In many cases L<jpath> might be a more convenient tool way to select JSON
 elements using L<JSON::Path> syntax.
 
-jq, L<https://stedolan.github.io/jq/>, is also a powerful tool to select as well
-as manipulate JSON elements.
+jq, L<https://stedolan.github.io/jq/>, is a powerful tool to select as well as
+manipulate JSON elements.
 
 L<Data::CSel>, L<Data::CSel::WrapStruct>, L<CSel::Examples>
 
