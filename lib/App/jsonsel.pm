@@ -8,7 +8,6 @@ use strict;
 use warnings;
 
 use App::CSelUtils;
-use Scalar::Util qw(refaddr);
 
 our %SPEC;
 
@@ -32,51 +31,44 @@ $SPEC{jsonsel} = {
     v => 1.1,
     summary => 'Select JSON elements using CSel (CSS-selector-like) syntax',
     args => {
-        %App::CSelUtils::foosel_common_args,
-        %App::CSelUtils::foosel_struct_action_args,
+        %App::CSelUtils::foosel_args_common,
     },
 };
 sub jsonsel {
     require JSON::MaybeXS;
 
-    my %args = @_;
+    App::CSelUtils::foosel(
+        @_,
 
-    my $expr = $args{expr};
-    my $actions = $args{actions};
+        code_read_tree => sub {
+            my $args = shift;
+            my $data;
+            if ($args->{file} eq '-') {
+                binmode STDIN, ":utf8";
+                $data = _decode_json(join "", <>);
+            } else {
+                require File::Slurper;
+                $data = _decode_json(File::Slurper::read_text($args->{file}));
+            }
 
-    # parse first so we can bail early on error without having to read the input
-    require Data::CSel;
-    Data::CSel::parse_csel($expr)
-          or return [400, "Invalid CSel expression '$expr'"];
+            require Data::CSel::WrapStruct;
+            my $tree = Data::CSel::WrapStruct::wrap_struct($data);
+            $tree;
+        },
 
-    my $data;
-    if ($args{file} eq '-') {
-        binmode STDIN, ":utf8";
-        $data = _decode_json(join "", <>);
-    } else {
-        require File::Slurper;
-        $data = _decode_json(File::Slurper::read_text($args{file}));
-    }
+        csel_opts => {class_prefixes=>['Data::CSel::WrapStruct']},
 
-    require Data::CSel::WrapStruct;
-    my $tree = Data::CSel::WrapStruct::wrap_struct($data);
+        code_transform_node_actions => sub {
+            my $args = shift;
 
-    my @matches = Data::CSel::csel(
-        {class_prefixes=>['Data::CSel::WrapStruct']}, $expr, $tree);
-
-    # skip root node itself to avoid duplication
-    @matches = grep { refaddr($_) ne refaddr($tree) } @matches
-        unless @matches <= 1;
-
-    for my $action (@$actions) {
-        if ($action eq 'print') {
-            $action = 'print_func_or_meth:meth:value.func:App::jsonsel::_encode_json',
-        }
-    }
-
-    App::CSelUtils::do_actions_on_nodes(
-        nodes   => \@matches,
-        actions => $args{actions},
+            for my $action (@{ $args->{node_actions} }) {
+                if ($action eq 'print' || $action eq 'print_as_string') {
+                    $action = 'print_func_or_meth:meth:value.func:App::jsonsel::_encode_json';
+                } elsif ($action eq 'dump') {
+                    $action = 'dump:value';
+                }
+            }
+        },
     );
 }
 
