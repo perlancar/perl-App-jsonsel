@@ -44,7 +44,7 @@ sub jsonsel {
             my $args = shift;
             my $data;
             if ($args->{file} eq '-') {
-                binmode STDIN, ":utf8";
+                binmode STDIN, ":encoding(utf8)";
                 $data = _decode_json(join "", <>);
             } else {
                 require File::Slurper;

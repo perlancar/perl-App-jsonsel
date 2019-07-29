@@ -18,7 +18,7 @@ Perinci::CmdLine::Any->new(
 
 =head1 SYNOPSIS
 
- % jsonsel "Scalar[value > 3]" file.json
+ % jsonsel file.json "Scalar[value > 3]"
 
 
 =head1 SEE ALSO
@@ -31,9 +31,4 @@ manipulate JSON elements.
 
 L<Data::CSel>, L<Data::CSel::WrapStruct>, L<CSel::Examples>
 
-L<yamlsel>, a similar application but for selecting YAML elements.
-
-L<orgsel>, a similar application but for selecting Org elements.
-
-L<htmlsel>, a similar application but for selecting HTML elements using CSS
-selector syntax.
+L<yamlsel>, L<orgsel>, L<htmlsel>, L<podsel>, L<ppisel>
