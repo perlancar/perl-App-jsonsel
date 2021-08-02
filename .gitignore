@@ -2,3 +2,4 @@ App-jsonsel-*
 .build
 *~
 nytprof*
+.DS_Store
